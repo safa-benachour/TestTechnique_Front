@@ -6,6 +6,7 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
+import { PanierServiceService } from "app/products/data-access/panier-service.service";
 
 const emptyProduct: Product = {
   id: 0,
@@ -33,6 +34,8 @@ const emptyProduct: Product = {
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
+  //private readonly panierServiceService = inject(PanierServiceService);
+  produits = signal<Product[]>([]);
 
   public readonly products = this.productsService.products;
 
@@ -42,7 +45,15 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     this.productsService.get().subscribe();
+
   }
+  constructor(
+    //private productService: ProductService,
+    protected panierServiceService: PanierServiceService
+  ) {
+    this.loadProducts();
+  }
+
 
   public onCreate() {
     this.isCreation = true;
@@ -75,5 +86,15 @@ export class ProductListComponent implements OnInit {
 
   private closeDialog() {
     this.isDialogVisible = false;
+  }
+
+  loadProducts() {
+
+
+    this.productsService.get().subscribe(p => this.produits.set(p));
+  }
+
+  ajouterToPanier(product: Product) {
+    this.panierServiceService.ajouterPanier(product);
   }
 }

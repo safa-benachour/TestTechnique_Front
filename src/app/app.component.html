@@ -6,11 +6,14 @@
         {{ title }}
     </div>
     <div class="p-toolbar-group-end">
+      <a routerLink="/products/panier">
         <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
+      <p-badge [value]="panierServiceService.panierItems().length" severity="info" class="ml-2"></p-badge>
+      </a>
     </div>
 </p-toolbar>
-<p-splitter 
-    [panelSizes]="[20, 80]" 
+<p-splitter
+    [panelSizes]="[20, 80]"
     [style]="{ height: 'calc(100vh - 100px)' }">
     <ng-template pTemplate>
         <div class="w-full">
